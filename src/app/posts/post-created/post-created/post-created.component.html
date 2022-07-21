@@ -1,0 +1,59 @@
+<mat-card>
+  <h1 style="text-align:center ;"><b>Create Your Blogs</b></h1>
+  <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <mat-form-field appearance="outline">
+      <input
+      matInput
+      name="name"
+      ngModel
+       placeholder="Enter your name"
+       required
+       minlength="4"
+       #name="ngModel"
+        />
+        <mat-error *ngIf="name.invalid">PLease enter your name</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <input
+      matInput
+      name="number"
+      ngModel
+       placeholder="Enter your number"
+       required
+       maxlength="10"
+       #name="ngModel"
+        />
+        <mat-error *ngIf="name.invalid">PLease enter your number</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <input
+      matInput
+      name="address"
+      ngModel
+       placeholder="Enter your address"
+       required
+       #name="ngModel"
+        />
+        <mat-error *ngIf="name.invalid">PLease enter your address</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <textarea
+       matInput
+       rows="6"
+       ngModel name="content"
+       placeholder="Enter your post description"
+       required
+       #content="ngModel"> </textarea>
+       <mat-error *ngIf="content.invalid">Please describe your post</mat-error>
+    </mat-form-field>
+    <div class="center">
+      <button  mat-raised-button color="primary" type="submit">
+        Save Post
+      </button>
+    </div>
+
+  </form>
+</mat-card>
