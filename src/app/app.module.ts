@@ -15,6 +15,7 @@ import { PostCreatedComponent } from './posts/post-created/post-created/post-cre
 import { HeaderComponent } from './header/header/header.component';
 import { PostListComponent } from './posts/post-list/post-list/post-list.component';
 import { PostsService } from './services/posts.service';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { PostsService } from './services/posts.service';
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
     HttpClientModule,

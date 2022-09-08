@@ -1,17 +1,10 @@
 <mat-toolbar color="primary" class="tool">
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>My Measseg</span>
-  <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>home</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>contacts</mat-icon>
-  </button>
+  <span> <a routerLink ="/">My Messages</a></span>
+  <span class="spacer"></span>
+  <ul>
+    <li>
+      <a mat-button routerLink ="/create" routerLinkActive="mat-warn">New Post</a>
+    </li>
 
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
+  </ul>
 </mat-toolbar>
