@@ -6,3 +6,13 @@ mat-form-field,textarea{
 }
 
 p { text-align: center }
+
+mat-spinner{
+
+  margin: auto;
+}
+
+input[type="file"] {
+
+  visibility: hidden;
+}

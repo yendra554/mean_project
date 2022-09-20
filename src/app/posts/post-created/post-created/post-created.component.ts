@@ -10,24 +10,27 @@ import { PostsService } from 'src/app/services/posts.service';
 })
 export class PostCreatedComponent implements OnInit {
 
+  isLoading = false;
+  public post : Post
   private mode = 'create';
   private postId :  string;
-  private post : Post
 
 
 
 
   constructor( public postsService: PostsService , public route: ActivatedRoute) {}
 
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
+  ngOnInit() {
 
-    this.route.paramMap.subscribe((paramMap : ParamMap) => {
-      if (paramMap.has('postId')){
-         this.mode = 'edit';
-         this.postId = paramMap.get('postId');
-         this.post = this.postsService.getPost(this.postId);
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has("postId")) {
+        this.mode = "edit";
+        this.postId = paramMap.get("postId");
+        this.isLoading = true;
+        this.postsService.getPost(this.postId).subscribe(postData => {
+          this.isLoading = false;
+          this.post = { id: postData._id, title_name: postData.title_name , address: postData.address, number: postData.number, content: postData.content }
+         });
       }
       else{
           this.mode =' create';
@@ -37,11 +40,19 @@ export class PostCreatedComponent implements OnInit {
 
   }
 
-  onAddPost(form: NgForm) {
+  onSavePost(form: NgForm) {
     if (form.invalid) {
       return;
     }
-    this.postsService.addPost(form.value.name,form.value.number,form.value.address, form.value.content);
+    this.isLoading = true;
+    if (this.mode === "create") {
+      this.postsService.addPost(form.value.title_name,form.value.number,form.value.address, form.value.content);
+    } else {
+      this.postsService.updatePost(
+        this.postId,
+        form.value.title_name,form.value.number,form.value.address, form.value.content
+      );
+    }
     form.resetForm();
-   }
+  }
 }

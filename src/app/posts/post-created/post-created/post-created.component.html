@@ -1,11 +1,12 @@
 <mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
   <h1 style="text-align:center ;"><b>Create Your Blogs</b></h1>
-  <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+  <form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
     <mat-form-field appearance="outline">
       <input
       matInput
-      name="name"
-      ngModel
+      name="title_name"
+      [ngModel]="post?.title_name"
        placeholder="Enter your name"
        required
        minlength="4"
@@ -13,16 +14,21 @@
         />
         <mat-error *ngIf="name.invalid">PLease enter your name</mat-error>
     </mat-form-field>
-
+   <div>
+    <hr>
+    <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+    <input type="file" #filePicker>
+    <hr>
+   </div>
     <mat-form-field appearance="outline">
       <input
       matInput
       name="number"
-      ngModel
+      [ngModel]="post?.number"
        placeholder="Enter your number"
        required
        maxlength="10"
-       #name="ngModel"
+       #number="ngModel"
         />
         <mat-error *ngIf="name.invalid">PLease enter your number</mat-error>
     </mat-form-field>
@@ -31,10 +37,10 @@
       <input
       matInput
       name="address"
-      ngModel
-       placeholder="Enter your address"
+      [ngModel]="post?.address"
+      placeholder="Enter your address"
        required
-       #name="ngModel"
+       #address="ngModel"
         />
         <mat-error *ngIf="name.invalid">PLease enter your address</mat-error>
     </mat-form-field>
@@ -43,7 +49,8 @@
       <textarea
        matInput
        rows="6"
-       ngModel name="content"
+       [ngModel]="post?.content"
+       name="content"
        placeholder="Enter your post description"
        required
        #content="ngModel"> </textarea>
