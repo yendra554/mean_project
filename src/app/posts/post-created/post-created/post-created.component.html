@@ -1,66 +1,65 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <h1 style="text-align:center ;"><b>Create Your Blogs</b></h1>
-  <form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
+  <h1 style="text-align: center"><b>Create Your Blogs</b></h1>
+  <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isLoading">
     <mat-form-field appearance="outline">
       <input
-      matInput
-      name="title_name"
-      [ngModel]="post?.title_name"
-       placeholder="Enter your name"
-       required
-       minlength="4"
-       #name="ngModel"
-        />
-        <mat-error *ngIf="name.invalid">PLease enter your name</mat-error>
+        matInput
+        name="title"
+        type="text"
+        formControlName="title"
+        placeholder="Enter your post"
+      />
+      <mat-error *ngIf="form.get('title').invalid"
+        >PLease enter your title</mat-error
+      >
     </mat-form-field>
-   <div>
-    <hr>
-    <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
-    <input type="file" #filePicker>
-    <hr>
-   </div>
+    <div>
+      <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+      <input type="file" #filePicker (change)="onImagePick($event)">
+    </div>
+    <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+      <img [src]="imagePreview" [alt]="form.value.title">
+    </div>
+    <!--
     <mat-form-field appearance="outline">
       <input
-      matInput
-      name="number"
-      [ngModel]="post?.number"
-       placeholder="Enter your number"
-       required
-       maxlength="10"
-       #number="ngModel"
-        />
-        <mat-error *ngIf="name.invalid">PLease enter your number</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <input
-      matInput
-      name="address"
-      [ngModel]="post?.address"
-      placeholder="Enter your address"
-       required
-       #address="ngModel"
-        />
-        <mat-error *ngIf="name.invalid">PLease enter your address</mat-error>
+        matInput
+        formControlName="number"
+        placeholder="Enter your number"
+      />
+      <mat-error *ngIf="form.get('number').invalid"
+        >PLease enter your number</mat-error
+      >
     </mat-form-field>
 
+    <mat-form-field appearance="outline">
+      <input
+        matInput
+        type="text"
+        formControlName="address"
+        placeholder="Enter your address"
+      />
+      <mat-error *ngIf="form.get('address').invalid"
+        >PLease enter your address</mat-error
+      >
+    </mat-form-field>
+-->
     <mat-form-field appearance="outline">
       <textarea
-       matInput
-       rows="6"
-       [ngModel]="post?.content"
-       name="content"
-       placeholder="Enter your post description"
-       required
-       #content="ngModel"> </textarea>
-       <mat-error *ngIf="content.invalid">Please describe your post</mat-error>
+        matInput
+        rows="6"
+        type="text"
+        formControlName="content"
+        placeholder="Enter your post description"
+      >
+      </textarea>
+      <mat-error *ngIf="form.get('content').invalid"
+        >Please describe your post</mat-error
+      >
     </mat-form-field>
     <div class="center">
-      <button  mat-raised-button color="primary" type="submit">
-        Save Post
-      </button>
+      <button mat-raised-button color="primary" type="submit">Save Post</button>
     </div>
-
   </form>
 </mat-card>
