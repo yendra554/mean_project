@@ -13,6 +13,9 @@ ul{
   padding: 0;
 }
 
+ul{
+  display: flex;
+}
 a{
   text-decoration: none;
   color: white;

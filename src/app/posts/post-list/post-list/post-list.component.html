@@ -14,12 +14,14 @@
     -->
     <label>Content:</label> <p>{{post.content}}</p>
 
-    <mat-action-row>
+    <mat-action-row *ngIf="userIsAuthenticated && userId === post.creator ">
       <a mat-raised-button color="primary"  [routerLink]="['/edit', post.id]">EDIT</a>
       <button mat-raised-button color="warn" (click)="onDelete(post.id)">DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-
+<mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOption" (page)="onChangedPage($event)"
+*ngIf="posts.length >0
+ "></mat-paginator>
 <p class="info-text mat-body1" *ngIf="posts.length <= 0 && !isLoading">No Post Added Yet</p>
 <!--- yendra554-->

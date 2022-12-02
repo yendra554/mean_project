@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { Post } from 'src/app/services/interface/post.model';
 import { PostsService } from 'src/app/services/posts.service';
 import { imageType } from './image-type.validator';
@@ -10,36 +12,37 @@ import { imageType } from './image-type.validator';
   styleUrls: ['./post-created.component.css'],
 })
 export class PostCreatedComponent implements OnInit {
-  form: FormGroup;
+  enteredTitle = "";
+  enteredContent = "";
+  post: Post;
   isLoading = false;
+  form: FormGroup;
   imagePreview: string;
-  public post: Post;
-  private mode = 'create';
+  private mode = "create";
   private postId: string;
+  private authStatusSub: Subscription;
 
   constructor(
     public postsService: PostsService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.authStatusSub = this.authService
+      .getAuthStatusListener()
+      .subscribe(authStatus => {
+        this.isLoading = false;
+      });
     this.form = new FormGroup({
       title: new FormControl(null, {
-        validators: [Validators.required, Validators.minLength(4)],
+        validators: [Validators.required, Validators.minLength(3)]
       }),
-      // number: new FormControl(null, {
-      //   validators: [Validators.required, Validators.maxLength(10)],
-      // }),
-      // address: new FormControl(null, {
-      //   validators: [Validators.required],
-      // }),
-      content: new FormControl(null, {
-        validators: [Validators.required],
-      }),
+      content: new FormControl(null, { validators: [Validators.required] }),
       image: new FormControl(null, {
         validators: [Validators.required],
-        asyncValidators: [imageType],
-      }),
+        asyncValidators: [imageType]
+      })
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("postId")) {
@@ -51,15 +54,12 @@ export class PostCreatedComponent implements OnInit {
           this.post = {
             id: postData._id,
             title: postData.title,
-            // number: postData.number,
-            // address: postData.address,
             content: postData.content,
-            imagePath: postData.imagePath
+            imagePath: postData.imagePath,
+            creator: postData.creator
           };
           this.form.setValue({
             title: this.post.title,
-            // number: this.post.number,
-            // address: this.post.address,
             content: this.post.content,
             image: this.post.imagePath
           });
@@ -70,6 +70,7 @@ export class PostCreatedComponent implements OnInit {
       }
     });
   }
+
   onImagePick(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ image: file });
@@ -89,8 +90,6 @@ export class PostCreatedComponent implements OnInit {
     if (this.mode === "create") {
       this.postsService.addPost(
         this.form.value.title,
-        // this.form.value.number,
-        // this.form.value.address,
         this.form.value.content,
         this.form.value.image
       );
@@ -98,12 +97,14 @@ export class PostCreatedComponent implements OnInit {
       this.postsService.updatePost(
         this.postId,
         this.form.value.title,
-        // this.form.value.number,
-        // this.form.value.address,
         this.form.value.content,
         this.form.value.image
       );
     }
     this.form.reset();
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
   }
 }
