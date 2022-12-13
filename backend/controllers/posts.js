@@ -27,7 +27,7 @@ exports.createPost = (req, res, next) => {
     });
 }
 
-exports.updatePost = (req, res, next) => {
+exports.updatePost =   (req, res, next) => {
   let imagePath = req.body.imagePath;
   if (req.file) {
     const url = req.protocol + "://" + req.get("host");
@@ -54,6 +54,7 @@ exports.updatePost = (req, res, next) => {
       });
     });
 }
+
 
 
 exports.getPosts = (req, res, next) => {

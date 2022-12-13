@@ -1,10 +1,10 @@
 import { AbstractControl } from "@angular/forms";
 import { Observable, Observer, of } from "rxjs";
 
-export const imageType = (
+
+export const mimeType = (
   control: AbstractControl
 ): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> => {
-
   if (typeof(control.value) === 'string') {
     return of(null);
   }
@@ -37,7 +37,7 @@ export const imageType = (
         if (isValid) {
           observer.next(null);
         } else {
-          observer.next({ invalidImageType: true });
+          observer.next({ invalidMimeType: true });
         }
         observer.complete();
       });

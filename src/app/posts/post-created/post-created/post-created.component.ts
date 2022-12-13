@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { Post } from 'src/app/services/interface/post.model';
 import { PostsService } from 'src/app/services/posts.service';
-import { imageType } from './image-type.validator';
+import { mimeType } from './mime-type.validator';
 @Component({
   selector: 'app-post-created',
   templateUrl: './post-created.component.html',
@@ -41,7 +41,7 @@ export class PostCreatedComponent implements OnInit {
       content: new FormControl(null, { validators: [Validators.required] }),
       image: new FormControl(null, {
         validators: [Validators.required],
-        asyncValidators: [imageType]
+        asyncValidators: [mimeType]
       })
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
