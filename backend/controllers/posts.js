@@ -1,6 +1,5 @@
 const Post = require("../models/post");
 
-
 exports.createPost = (req, res, next) => {
   const url = req.protocol + "://" + req.get("host");
   const post = new Post({
@@ -25,9 +24,9 @@ exports.createPost = (req, res, next) => {
         message: "Creating a post failed!"
       });
     });
-}
+};
 
-exports.updatePost =   (req, res, next) => {
+exports.updatePost = (req, res, next) => {
   let imagePath = req.body.imagePath;
   if (req.file) {
     const url = req.protocol + "://" + req.get("host");
@@ -42,7 +41,7 @@ exports.updatePost =   (req, res, next) => {
   });
   Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
     .then(result => {
-      if (result.nModified > 0) {
+      if (result.n > 0) {
         res.status(200).json({ message: "Update successful!" });
       } else {
         res.status(401).json({ message: "Not authorized!" });
@@ -53,9 +52,7 @@ exports.updatePost =   (req, res, next) => {
         message: "Couldn't udpate post!"
       });
     });
-}
-
-
+};
 
 exports.getPosts = (req, res, next) => {
   const pageSize = +req.query.pagesize;
@@ -82,8 +79,7 @@ exports.getPosts = (req, res, next) => {
         message: "Fetching posts failed!"
       });
     });
-}
-
+};
 
 exports.getPost = (req, res, next) => {
   Post.findById(req.params.id)
@@ -99,21 +95,21 @@ exports.getPost = (req, res, next) => {
         message: "Fetching post failed!"
       });
     });
-  }
+};
 
-  exports.deletePost =  (req, res, next) => {
-    Post.deleteOne({ _id: req.params.id, creator: req.userData.userId })
-      .then(result => {
-        console.log(result);
-        if (result.n > 0) {
-          res.status(200).json({ message: "Deletion successful!" });
-        } else {
-          res.status(401).json({ message: "Not authorized!" });
-        }
-      })
-      .catch(error => {
-        res.status(500).json({
-          message: "Deleting posts failed!"
-        });
+exports.deletePost = (req, res, next) => {
+  Post.deleteOne({ _id: req.params.id, creator: req.userData.userId })
+    .then(result => {
+      console.log(result);
+      if (result.n > 0) {
+        res.status(200).json({ message: "Deletion successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "Deleting posts failed!"
       });
-  }
+    });
+};
